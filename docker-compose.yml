@@ -1,0 +1,26 @@
+version: '3.1'
+
+services:
+  backend-service:
+    build: .
+    container_name: 'university-backend-container'
+    depends_on:
+      - database-service
+    environment:
+      - SPRING_DATASOURCE_URL=jdbc:postgresql://database-service:5432/university_db
+      - SPRING_DATASOURCE_USERNAME=postgres
+      - SPRING_DATASOURCE_PASSWORD=root
+      - SPRING_JPA_HIBERNATE_DDL_AUTO=update
+      - SPRING_JPA_SHOW_SQL=true
+    ports:
+      - 8080:8080
+
+  database-service:
+    image: 'postgres'
+    container_name: 'university-db-container'
+    environment:
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=root
+      - POSTGRES_DB=university_db
+    ports:
+      - 5432:5432
